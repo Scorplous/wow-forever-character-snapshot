@@ -1,8 +1,14 @@
 # WoW Character Snapshot
 
 AtlasSnapshot is a local character snapshot addon for the **World of Warcraft:
-Forever beta**. It gathers information exposed by the game's addon APIs for
-later inspection and gameplay guidance.
+Forever beta**, designed to give **ChatGPT** character data for gear comparisons,
+quest planning, and explanations of your learned abilities. Instead of typing
+out your equipment, stats, and quest log, you capture them in a local file and
+choose how to share that file with ChatGPT.
+
+**Atlas** is the nickname the project's creator uses for ChatGPT.
+**AtlasSnapshot** is the addon/project brand, not a separate AI service or an
+additional service you need to install or subscribe to.
 
 **Version:** 0.3.0. **Declared client interface:** 16001.
 
@@ -11,14 +17,42 @@ a live external file feed or connect automatically to an AI/chat service.** WoW
 writes its SavedVariables file when the interface reloads, the character logs
 out, or the client exits normally. A crash may lose unsaved changes.
 
+## Do I need ChatGPT to run it?
+
+No. A compatible WoW client and this addon are sufficient to collect and save
+snapshots. ChatGPT is the intended analysis/advice workflow, but the saved data
+can also be inspected manually or by another reader. The addon makes no OpenAI
+API calls and requires no API key or ChatGPT subscription to operate.
+
+To get advice from ChatGPT, use ChatGPT separately and provide the saved data.
+Upload, analysis, and local-access features depend on the ChatGPT interface and
+account you use; installing the addon does not enable or grant those features.
+Python and Lupa are only dependencies for the optional offline tests.
+
 ## What it captures
 
-- Character identity, level, XP, money, resources, combat state, and location.
-- Equipped items and durability, carried bags, active quests and objectives.
-- Completed quest IDs exposed by the client, independently of the active log.
-- Spellbook descriptions, cooldowns, talents, skills, and professions.
-- Combat stats, player auras, target information, action references, and basic
-  group/PvP context.
+The snapshot is a structured Lua SavedVariables file, not a screenshot or video.
+It records the following information when the current client exposes it:
+
+| Section | Snapshot contents | How it can help |
+| --- | --- | --- |
+| Character | Name, realm, class, race, faction, level, current/required/rested XP, money, health and mana, alive/dead and combat/resting states, and hearth location. | Establish which character the advice concerns and its progression or resource limits. |
+| Location | Zone, subzone, map ID, map coordinates, and instance information. | Plan from the captured location; this is not continuous position tracking. |
+| Equipment | Equipment slots, item links and cached names, quality, item/required levels, item stats, and current/maximum durability. | Compare equipped pieces and identify potential upgrade priorities. |
+| Carried bags | Backpack and four bag slots, available slot counts, item links/names, quantities, and exposed cooldowns. | Check supplies, carried quest items, and available bag space. Bank storage is excluded. |
+| Combat stats | Strength, Agility, Stamina, Intellect, Spirit, armor, attack power, weapon damage and speed, critical strike, dodge/parry/block chances, resistances, spell damage/healing bonuses, and mana regeneration. | Explain the captured build's strengths and tradeoffs; this is not a measured damage-per-second combat log. |
+| Active quests | Quest IDs, titles, levels, log headers, objective text and progress, and completion flags where returned by the client. | Identify unfinished objectives and quests ready for turn-in without assuming they are still current after you continue playing. |
+| Completed quests | Sorted, deduplicated completed quest IDs reported by the client, available cached titles, query time, counts, and capture quality. | Check evidence of earlier quest progress independently of the active log. This is not a guaranteed lifetime history. |
+| Talents | Available trait configurations, trees, nodes, ranks, definitions and spell descriptions, committed talent currency, and staged-change indicators. | Discuss learned choices while distinguishing pending edits from committed talents. |
+| Skills and professions | Exposed skill lines, ranks, maximum ranks, and profession information. | Understand weapon/profession training and crafting context where available. |
+| Spellbook | Known spell names and ranks, client descriptions, cooldowns, power costs, and charges where available. | Ground ability advice in the captured spellbook and client version. |
+| Auras, target, and actions | Player buffs/debuffs, basic current-target details, and action-bar slot references. | Provide context for a particular captured moment, not a live fight feed. |
+| Group and PvP context | Group size, group/raid membership flags, PvP flags/zone type, movement speed, mounted/swimming state, and latency. | Explain surrounding conditions at capture time. |
+
+Fields can be absent, restricted, uncached, or failed. Their inclusion in this
+table describes what the addon attempts to collect, not a guarantee that every
+field is available in every snapshot. See [Incomplete or restricted
+data](#incomplete-or-restricted-data) before treating an absent value as evidence.
 
 Bank contents, chat messages, passwords, and guild recruitment records are not
 collected. The addon does not move the character, fight, send messages, or
@@ -95,6 +129,50 @@ the recorded client build before using a snapshot. Reading a file now does not
 make its contents current. `lastOutOfCombat` is a separately dated baseline;
 never substitute it for current data without labeling its age. Coordinates use
 a 0-to-1 scale. Cooldowns use the game's `clockSeconds`, not wall-clock time.
+
+## Using a snapshot with ChatGPT
+
+### Share a saved file or an excerpt
+
+1. Follow [Capture and read an export](#capture-and-read-an-export), including a
+   safe reload or normal logout to write the file.
+2. Make a copy of the file from **SavedVariables** and review it for information
+   you do not want to share. The addon code also has the name `AtlasSnapshot.lua`;
+   the file inside `Interface/AddOns` is the program, not your character snapshot.
+3. Attach the snapshot copy in a ChatGPT interface that supports the file type,
+   or paste the relevant text into the chat. If the interface rejects `.lua`,
+   you can make a plain-text `.txt` copy for sharing; leave WoW's original file
+   and filename unchanged. File-upload availability and limits vary by surface.
+4. Say you are playing **WoW Forever beta**, give your goal, and ask ChatGPT to
+   check the captured character, build, timestamp, and section statuses first.
+
+For example:
+
+> Read this WoW Forever snapshot. Check its timestamp and unavailable sections,
+> then recommend one next questing step based on the active objectives. Treat
+> missing completed-quest IDs as unknown, not as proof I never did those quests.
+
+The snapshot supplies character context, not a complete game database. Quest
+locations, reward comparisons, and beta-specific mechanics may still need
+verification. Later gear changes or quest progress require a newer saved file.
+
+### Let an authorized local agent read it
+
+If your setup includes an agent such as Codex with local file-reading tools, you
+can grant it access to the saved snapshot and ask it to inspect that file. This
+requires the relevant computer connection, tools, and filesystem permissions.
+A regular ChatGPT chat does not gain access to your computer merely because
+the addon is installed or because you mention a local file path.
+
+Local access saves you the manual attachment step; it does **not** change when
+WoW writes SavedVariables. The agent must still check the capture time and
+report stale or partial data. There is no automatic upload, account linking,
+background monitoring, or direct ChatGPT connection in this addon.
+
+See the official OpenAI documentation for [working with
+files](https://learn.chatgpt.com/docs/artifacts-viewer?surface=app) and [Codex
+filesystem permissions](https://learn.chatgpt.com/docs/permissions). These are
+separate application capabilities, not features supplied by AtlasSnapshot.
 
 ## Incomplete or restricted data
 
