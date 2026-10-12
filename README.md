@@ -17,6 +17,28 @@ a live external file feed or connect automatically to an AI/chat service.** WoW
 writes its SavedVariables file when the interface reloads, the character logs
 out, or the client exits normally. A crash may lose unsaved changes.
 
+## Why this is useful
+
+The project grew out of playing a paladin while talking with ChatGPT about what
+to do next. Repeatedly reading equipment stats, learned abilities, and long quest
+lists aloud interrupts play and makes it easy to miss a detail. A snapshot gives
+the assistant a structured record to inspect before offering advice.
+
+- **Less transcription:** share one saved snapshot instead of typing out every
+  item, talent, and objective or narrating several menus.
+- **More relevant advice:** ask about the gear actually equipped, abilities
+  actually recorded, and objectives still in the captured quest log.
+- **Smaller, clearer next steps:** give your play style and goal, then ask for
+  one practical questing or gear decision at a time.
+- **Visible limits:** timestamps and capture states help distinguish what the
+  file establishes from stale, missing, or client-restricted information.
+
+This reduces guessing; it does not make the assistant infallible or the data
+live. The snapshot alone cannot establish the optimal route, current enemy
+activity, auction prices, or undocumented server behavior. Those questions need
+additional current evidence. Voice is an optional way to talk with ChatGPT;
+the same workflow works through text, and voice is not an addon requirement.
+
 ## Do I need ChatGPT to run it?
 
 No. A compatible WoW client and this addon are sufficient to collect and save
@@ -173,6 +195,40 @@ See the official OpenAI documentation for [working with
 files](https://learn.chatgpt.com/docs/artifacts-viewer?surface=app) and [Codex
 filesystem permissions](https://learn.chatgpt.com/docs/permissions). These are
 separate application capabilities, not features supplied by AtlasSnapshot.
+
+### Example workflow while playing
+
+1. Play normally. The addon refreshes its in-game snapshot after relevant events
+   such as gear changes or quest updates; that does not yet refresh the external
+   saved file.
+2. When you want advice, get somewhere safe and out of combat. Use `/reload`
+   to save fresh data, or use a snapshot already written by a normal logout.
+   Do not interrupt combat to refresh the file.
+3. Share the saved snapshot with ChatGPT, or ask your authorized local agent to
+   read it. Have it confirm the capture time, recorded level/location, and any
+   unavailable sections before recommending a next step.
+4. Give your goal and play style, through voice or text. For example, a melee
+   paladin player might want damage while retaining useful healing and buffs.
+   Ask one focused question, such as:
+   - "Which equipped armor slot is the weakest fit for that play style?"
+   - "Which active quest should I focus on next from the location in this save?"
+   - "Is this new weapon better for me? Here is its tooltip."
+5. For an item comparison, the snapshot supplies the **equipped** item baseline
+   and items captured in your bags. A vendor item, auction listing, or unclaimed
+   quest reward may not be in it. Provide the candidate's tooltip, relevant
+   stats, or a screenshot separately, including the price if cost matters.
+6. Continue playing and request the next step when needed. After meaningful gear
+   or quest changes, repeat the safe save/read step so the advice uses updated
+   evidence. Until then, the assistant should identify the file as an older save.
+
+Ask for missing details to be identified rather than guessed. Completed quest
+IDs can support a known completion; an absent ID cannot prove a quest was never
+completed. Quest routing still needs verified locations and mechanics for the
+correct game version.
+
+Screenshots and any authorized screen-reading or computer-control tools are
+separate capabilities. AtlasSnapshot does not capture your screen, listen to
+voice chat, control the game, or provide a continuous live view to ChatGPT.
 
 ## Incomplete or restricted data
 
