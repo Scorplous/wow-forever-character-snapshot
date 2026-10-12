@@ -1,4 +1,4 @@
-# WoW Character Snapshot
+# WoW Forever Character Snapshot
 
 AtlasSnapshot is a local character snapshot addon for the **World of Warcraft:
 Forever beta**, designed to give **ChatGPT** character data for gear comparisons,
