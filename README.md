@@ -1,4 +1,4 @@
-# AtlasSnapshot for WoW
+# WoW Character Snapshot
 
 AtlasSnapshot is a local character snapshot addon for the **World of Warcraft:
 Forever beta**. It gathers information exposed by the game's addon APIs for
