@@ -1,0 +1,8 @@
+## Interface: 16001
+## Title: Atlas Snapshot
+## Notes: Local character snapshots for coaching. Refreshes on reload/logout; no live connection.
+## Author: AtlasSnapshot contributors
+## Version: 0.3.0
+## SavedVariables: AtlasSnapshotDB
+## LoadSavedVariablesFirst: 1
+AtlasSnapshot.lua

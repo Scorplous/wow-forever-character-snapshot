@@ -1,0 +1,54 @@
+# Runtime exports and personal game data must stay local.
+**/SavedVariables/
+**/WTF/
+/AtlasSnapshot.lua
+/exports/
+/snapshots/
+/runtime/
+/backups/
+/work/
+*.bak
+*.backup
+*.log
+*.json
+*.jsonl
+*.csv
+*.db
+*.sqlite*
+
+# Screenshots, archives, and game binaries are not source distribution files.
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.mp4
+*.zip
+*.7z
+*.exe
+*.dll
+
+# Credentials and local configuration.
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+*.p12
+hosts.yml
+.codex/
+.agents/
+.idea/
+.vscode/
+
+# Python test environment and editor files.
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.DS_Store
+Thumbs.db
+*.swp
+*~
