@@ -97,9 +97,13 @@ compatible. Check the captured client build and each section's diagnostics.
 Completed-history capture has offline regression coverage; a complete lifetime
 quest history has not been established by live testing.
 
+## Download
+
+Download [AtlasSnapshot-WoW-Forever-v0.3.0-beta.zip](https://github.com/Scorplous/wow-forever-character-snapshot/releases/tag/v0.3.0-beta) from the release Assets. This is a beta prerelease, not a compatibility certification for other WoW clients. SHA256SUMS.txt is provided for verification.
+
 ## Install
 
-1. Download this repository's ZIP using **Code > Download ZIP**, then extract it.
+1. Download the packaged release above, then extract it.
 2. Find the WoW installation used by your Forever beta client.
 3. Copy the inner `AtlasSnapshot` folder into:
 
